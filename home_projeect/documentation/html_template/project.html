@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!--Bootstrap-->
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<script src="./js/bootstrap.bundle.min.js"></script>
+	<!--Favicons-->
+	<script src="https://kit.fontawesome.com/35e781efde.js" crossorigin="anonymous"></script>
+	
+	<title>Project</title>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		  	<div class="container-fluid">
+		    	<a class="navbar-brand" href="./projects.html"><i class="fas fa-tasks"></i></i></a>
+		    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+		      		<span class="navbar-toggler-icon"></span>
+		    	</button>
+		    <div class="collapse navbar-collapse" id="navbarToggler">
+		      	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		        	<li class="nav-item">
+		          		<a class="nav-link" href="./projects.html">Projects</a>
+		        	</li>
+		        	<li class="nav-item">
+		          		<a class="nav-link" href="./employees.html">Employees</a>
+		        	</li>
+		        	<li class="nav-item">
+		          		<a class="nav-link" href="./roles.html">Roles</a>
+		        	</li>
+		      	</ul>
+		    </div>
+		  </div>
+		</nav>
+	</header>
+
+	<section class="container my-4 pb-4">
+		<div class="row">
+			
+			<h2>Edit Project</h2>
+			<hr />
+
+			<div class="row">
+				<form>
+					<div>
+						<div class="mt-2">
+							<label for="projectNameInput" class="form-label">Project Name:</label>
+	  						<input type="text" class="form-control" id="projectNameInput" placeholder="Some Project">	
+						</div>
+	  					
+						<div class="mt-2">
+							<label for="startDateInput" class="form-label">Start Date:</label>
+	  						<input type="text" class="form-control" id="startDateInput" placeholder="01.01.2000">
+						</div>
+	  					
+						<div class="mt-2">
+							<label for="finishDateInput" class="form-label">Finish Date:</label>
+	  						<input type="text" class="form-control" id="finishDateInput" placeholder="01.01.2000">
+						</div>
+	  					
+						<div class="mt-2">
+							<p>Employees:</p>
+							
+							<div id="addedEmployees">
+									
+							</div>
+							
+							<div class="row justify-content-between">
+								
+								<label for="employeesDataList" class="col-2 col-form-label">Employee:</label>
+								<div class="col-5">
+									<input class="form-control" list="employeeOptions" id="employeesDataList" placeholder="Ivan Ivanov">
+									<datalist id="employeeOptions">
+									  	<option value="Ivan Ivanov">
+									  	<option value="Aleksey Mihno">
+									  	<option value="Alexandra Drozd">
+									</datalist>
+								</div>
+
+								<label for="rolesDataList" class="col-1 col-form-label">Role:</label>
+								<div class="col-3">
+									<input class="form-control" list="roleOptions" id="rolesDataList" placeholder="Project Manager">
+									<datalist id="roleOptions">
+									  	<option value="Project Manager">
+									  	<option value="Java Software Engineer">
+									  	<option value="QA Engineer">
+									</datalist>
+								</div>
+
+								<div class="col-1">
+									<a role="button" class="btn btn-outline-secondary" onclick="addEmployeeClick()"><i class="fas fa-plus"></i></a>
+								</div>
+
+							</div>
+						</div>
+
+	  					<div class="mt-4 text-end">
+	  						<a href="./projects.html" role="button" class="btn btn-outline-primary">Back</a>
+	  						<a href="#" role="button" class="btn btn-outline-success">Submit</a>
+						</div>
+					</div>
+				</form>
+			</div>	
+		</div>
+	</section>
+
+	<footer class="footer mt-5 py-2 bg-dark">
+	  	<div class="container">
+	    	<span class="text-muted">&copy 2021</span>
+	  	</div>
+	</footer>
+	
+</body>
+<script src="js/project.js"></script>
+</html>

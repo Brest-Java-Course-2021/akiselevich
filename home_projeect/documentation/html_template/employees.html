@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!--Bootstrap-->
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<script src="./js/bootstrap.bundle.min.js"></script>
+	<!--Favicons-->
+	<script src="https://kit.fontawesome.com/35e781efde.js" crossorigin="anonymous"></script>
+	
+	<title>Employees</title>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		  	<div class="container-fluid">
+		    	<a class="navbar-brand" href="./projects.html"><i class="fas fa-tasks"></i></i></a>
+		    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+		      		<span class="navbar-toggler-icon"></span>
+		    	</button>
+		    <div class="collapse navbar-collapse" id="navbarToggler">
+		      	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		        	<li class="nav-item">
+		          		<a class="nav-link" href="./projects.html">Projects</a>
+		        	</li>
+		        	<li class="nav-item">
+		          		<a class="nav-link active" aria-current="page" href="./employees.html">Employees</a>
+		        	</li>
+		        	<li class="nav-item">
+		          		<a class="nav-link" href="./roles.html">Roles</a>
+		        	</li>
+		      	</ul>
+		    </div>
+		  </div>
+		</nav>
+	</header>
+
+	<section class="container mt-4">
+		<div class="row">
+			
+			<h2>Employees</h2>
+			<hr />
+
+			<table class="table table-striped" id="employeesTable">
+			  	<thead>
+			    	<tr>
+			      		<th scope="col">FirstName</th>
+			      		<th scope="col">LastName</th>
+			      		<th scope="col">MiddleName</th>
+			      		<th scope="col">Email</th>
+			      		<th scope="col" class="text-end">
+			      			<a href="./employee.html" role="button" class="btn btn-outline-success"><i class="fas fa-plus"></i></a>
+			      		</th>
+			    	</tr>
+			  	</thead>
+			  	<tbody>
+			    	<tr id="r1">
+			      		<td scope="row">Ivan</td>
+			      		<td scope="row">Ivanov</td>
+			      		<td scope="row">Ivanovich</td>
+			      		<td scope="row">ivanov_ivan@gmail.com</td>
+			      		<td class="text-end">
+			      			<a href="./employee.html" role="button" class="btn btn-outline-warning"><i class="fas fa-pen"></i></a>
+			      			<a role="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModalWindow" data-bs-deleteId="1"><i class="fas fa-trash"></i></a>
+			      		</td>
+			       	</tr>
+			    	<tr id="r2">
+			      		<td scope="row">Aleksey</td>
+			      		<td scope="row">Mihno</td>
+			      		<td scope="row">Nikolaevich</td>
+			      		<td scope="row">mihno_alex@mail.ru</td>
+			      		<td class="text-end">
+			      			<a href="./employee.html" role="button" class="btn btn-outline-warning"><i class="fas fa-pen"></i></a>
+			      			<a role="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModalWindow" data-bs-deleteId="2"><i class="fas fa-trash"></i></a>
+			      		</td>
+			    	</tr>
+			    	<tr id="r3">
+			      		<td scope="row">Alexandra</td>
+			      		<td scope="row">Drozd</td>
+			      		<td scope="row">Igorevna</td>
+			      		<td scope="row">drozd_sasha@gmail.com</td>
+			      		<td class="text-end">
+			      			<a href="./employee.html" role="button" class="btn btn-outline-warning"><i class="fas fa-pen"></i></a>
+			      			<a role="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModalWindow" data-bs-deleteId="3"><i class="fas fa-trash"></i></a>
+			      		</td>
+			    	</tr>
+			  	</tbody>
+			</table>
+		</div>
+	</section>
+
+	<footer class="footer mt-auto py-2 bg-dark fixed-bottom">
+	  	<div class="container">
+	    	<span class="text-muted">&copy 2021</span>
+	  	</div>
+	</footer>
+
+	<section id="modalWindows">
+		<div class="modal fade" id="deleteModalWindow" tabindex="-1" aria-labelledby="deleteModalWindowLabel" aria-hidden="true">
+	  		<div class="modal-dialog">
+	    		<div class="modal-content">
+	      			<div class="modal-header">
+	        			<h5 class="modal-title">Please confirm your action</h5>
+	        			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      			</div>
+	      			<div class="modal-body">
+	        			<p>Are you sure you want to delete the entry?</p>
+	      			</div>
+	      			<div class="modal-footer">
+	        			<button id="modalCancelButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Сancel</button>
+	        			<button type="button" class="btn btn-primary" onclick="deleteRecordConfirm()">Yes</button>
+	      			</div>
+	    		</div>
+	  		</div>
+		</div>
+	</section>
+	
+</body>
+<!--JavaScript-->
+<script type="text/javascript" src="./js/modal.js"></script>
+
+</html>
