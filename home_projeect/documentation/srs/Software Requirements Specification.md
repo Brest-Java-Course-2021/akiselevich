@@ -67,7 +67,7 @@ Developing application should be based on the MVC architectural pattern in Java,
 
 ### 2.4 User Characteristics
 Entity class diagram:
-![Class diagram](./img/Class_diagram.png)
+![Class diagram](./img/Class_Diagram.png)
 
 ### 2.5 Assumptions and Dependencies
 Dependencies:  
