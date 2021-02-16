@@ -66,7 +66,7 @@ Functions available to the user:
 Developing application should be based on the MVC architectural pattern in Java, run on Apache Tomcat and run in a browser.
 
 ### 2.4 User Characteristics
-Entity class diagram:
+Entity class diagram: 
 ![Class diagram](./img/Class_Diagram.png)
 
 ### 2.5 Assumptions and Dependencies
