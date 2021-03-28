@@ -1,2 +1,2 @@
 # akiselevich
-SRS Documentation: [Link](https://brest-java-course-2021.github.io/akiselevich/documentation/srs/srs.md)  
+SRS Documentation: [Link](https://github.com/Brest-Java-Course-2021/akiselevich/blob/main/documentation/srs/srs.md)  
