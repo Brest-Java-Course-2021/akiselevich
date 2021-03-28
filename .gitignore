@@ -1,7 +1,6 @@
 # IDEA files
 *.iml
-out/
-.idea/ 
+out/ 
 
 # Compiled class file
 *.class
