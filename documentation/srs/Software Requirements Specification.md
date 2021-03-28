@@ -83,7 +83,7 @@ Dependencies:
 When entering the date of start or finish in the startDate or finishDate field when creating or editing information about the project, the input format should be as follows: DD-MM-YYYY. Example: "15-02-2000"  
 
 #### 3.1.1 User interfaces
-HTML Template: [Link](https://brest-java-course-2021.github.io/akiselevich/home_projeect/documentation/html_template/projects.html)
+HTML Template: [Link](https://brest-java-course-2021.github.io/akiselevich/documentation/html_template/index.html)
 
 * **Projects Mockup**
 ![Projects Mockup](./img/projects_mock.png)
