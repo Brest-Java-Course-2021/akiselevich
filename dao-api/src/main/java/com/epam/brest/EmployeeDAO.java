@@ -1,3 +1,5 @@
+package com.epam.brest;
+
 import com.epam.brest.model.Employee;
 
 import java.util.List;
@@ -9,9 +11,9 @@ public interface EmployeeDAO {
 
     Optional<Employee> findById(Integer employeeId);
 
-    Employee create(Employee employee);
+    Optional<Employee> create(Employee employee);
 
-    Employee update(Employee employee);
+    Optional<Employee> update(Employee employee);
 
     void delete(Integer employeeId);
 
