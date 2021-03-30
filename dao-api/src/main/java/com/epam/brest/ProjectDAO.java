@@ -1,3 +1,5 @@
+package com.epam.brest;
+
 import com.epam.brest.model.Project;
 
 import java.util.List;
@@ -9,9 +11,9 @@ public interface ProjectDAO {
 
     Optional<Project> findById(Integer projectId);
 
-    Project create(Project project);
+    Optional<Project> create(Project project);
 
-    Project update(Project project);
+    Optional<Project> update(Project project);
 
     void delete(Integer projectId);
 

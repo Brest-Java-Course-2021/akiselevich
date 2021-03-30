@@ -16,9 +16,12 @@ INSERT INTO Role (roleName) VALUES ( 'QA Engineer');
 
 INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (1, 1);
 INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (1, 2);
-INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (1, 3);
-INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (1, 2);
+INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (2, 3);
+INSERT INTO ProjectEmployee (projectId, employeeId) VALUES (2, 2);
 
 INSERT INTO EmployeeRole (employeeId, roleId) VALUES (1, 1);
 INSERT INTO EmployeeRole (employeeId, roleId) VALUES (2, 2);
 INSERT INTO EmployeeRole (employeeId, roleId) VALUES (3, 3);
+INSERT INTO EmployeeRole (employeeId, roleId) VALUES (1, 2);
+INSERT INTO EmployeeRole (employeeId, roleId) VALUES (2, 1);
+INSERT INTO EmployeeRole (employeeId, roleId) VALUES (3, 1);

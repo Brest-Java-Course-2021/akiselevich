@@ -1,8 +1,8 @@
+DROP TABLE IF EXISTS ProjectEmployee;
+DROP TABLE IF EXISTS EmployeeRole;
 DROP TABLE IF EXISTS Project;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Role;
-DROP TABLE IF EXISTS ProjectEmployee;
-DROP TABLE IF EXISTS EmployeeRole;
 
 CREATE TABLE Project
 (
@@ -41,6 +41,6 @@ CREATE TABLE EmployeeRole
 (
     employeeId INT,
     roleId INT,
-    CONSTRAINT EmployeeFK FOREIGN KEY (employeeId) REFERENCES Employee(employeeId),
+    CONSTRAINT EmployeeFK1 FOREIGN KEY (employeeId) REFERENCES Employee(employeeId),
     CONSTRAINT RoleFK FOREIGN KEY (roleId) REFERENCES Role(roleId)
 );

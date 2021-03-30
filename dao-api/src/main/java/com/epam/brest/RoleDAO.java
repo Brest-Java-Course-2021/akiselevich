@@ -1,3 +1,5 @@
+package com.epam.brest;
+
 import com.epam.brest.model.Role;
 
 import java.util.List;
@@ -9,9 +11,9 @@ public interface RoleDAO {
 
     Optional<Role> findById(Integer roleId);
 
-    Role create(Role role);
+    Optional<Role> create(Role role);
 
-    Role update(Role role);
+    Optional<Role> update(Role role);
 
     void delete(Integer roleId);
 
