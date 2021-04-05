@@ -1,4 +1,4 @@
-package com.epam.brest;
+package com.epam.brest.service;
 
 import com.epam.brest.model.dto.ProjectDTO;
 

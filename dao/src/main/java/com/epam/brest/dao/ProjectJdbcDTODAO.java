@@ -1,6 +1,6 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
-import com.epam.brest.model.Project;
+import com.epam.brest.ProjectDTODAO;
 import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.model.dto.ProjectDTO;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ProjectJdbcDTODAO  implements  ProjectDTODAO{
+public class ProjectJdbcDTODAO  implements ProjectDTODAO {
 
     private static final Log LOGGER = LogFactory.getLog(ProjectJdbcDTODAO.class);
 

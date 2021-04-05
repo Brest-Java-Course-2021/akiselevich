@@ -20,6 +20,7 @@
         <module>dao-api</module>
         <module>test-db</module>
         <module>service-api</module>
+        <module>service</module>
     </modules>
 
     <properties>
@@ -63,6 +64,12 @@
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

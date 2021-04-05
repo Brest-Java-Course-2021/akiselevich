@@ -1,5 +1,8 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
+import com.epam.brest.EmployeeDAO;
+import com.epam.brest.SpringJdbcConfig;
+import com.epam.brest.dao.EmployeeJdbcDAO;
 import com.epam.brest.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
