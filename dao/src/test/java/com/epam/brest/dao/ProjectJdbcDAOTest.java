@@ -1,5 +1,7 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
+import com.epam.brest.ProjectDAO;
+import com.epam.brest.test_db.SpringJdbcConfig;
 import com.epam.brest.model.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

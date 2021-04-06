@@ -1,5 +1,6 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
+import com.epam.brest.ProjectDAO;
 import com.epam.brest.model.Project;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
-public class ProjectJdbcDAO implements ProjectDAO{
+public class ProjectJdbcDAO implements ProjectDAO {
 
     private static final Log LOGGER = LogFactory.getLog(ProjectJdbcDAO.class);
 

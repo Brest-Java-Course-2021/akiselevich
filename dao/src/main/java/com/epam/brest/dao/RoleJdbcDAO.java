@@ -1,5 +1,6 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
+import com.epam.brest.RoleDAO;
 import com.epam.brest.model.Role;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class RoleJdbcDAO implements RoleDAO{
+public class RoleJdbcDAO implements RoleDAO {
 
     private static final Log LOGGER = LogFactory.getLog(RoleJdbcDAO.class);
 

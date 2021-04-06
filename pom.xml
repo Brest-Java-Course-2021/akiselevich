@@ -19,6 +19,9 @@
         <module>dao</module>
         <module>dao-api</module>
         <module>test-db</module>
+        <module>service-api</module>
+        <module>service</module>
+        <module>web-app</module>
     </modules>
 
     <properties>
@@ -67,6 +70,18 @@
 
             <dependency>
                 <groupId>com.epam.brest</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.epam.brest</groupId>
                 <artifactId>test-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -87,6 +102,13 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-jcl</artifactId>
                 <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>4.0.0</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

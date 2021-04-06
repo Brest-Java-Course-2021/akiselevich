@@ -1,7 +1,7 @@
-package com.epam.brest;
+package com.epam.brest.dao;
 
+import com.epam.brest.EmployeeDAO;
 import com.epam.brest.model.Employee;
-import com.epam.brest.model.Project;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Repository
-public class EmployeeJdbcDAO implements EmployeeDAO{
+public class EmployeeJdbcDAO implements EmployeeDAO {
 
     private static final Log LOGGER = LogFactory.getLog(EmployeeJdbcDAO.class);
 
