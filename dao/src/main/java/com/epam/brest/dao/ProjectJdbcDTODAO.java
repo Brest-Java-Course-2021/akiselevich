@@ -109,6 +109,7 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
     public Optional<ProjectDTO> findProjectWithEmployeeById(Integer projectId) {
         LOGGER.debug("DAO method called to find ProjectDTO by Id");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("projectId", projectId);
-        return Optional.of(jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor).get(0));
+        List<ProjectDTO> projectDTOList = jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor);
+        return projectDTOList.isEmpty() ? Optional.empty() : Optional.of(projectDTOList.get(0));
     }
 }

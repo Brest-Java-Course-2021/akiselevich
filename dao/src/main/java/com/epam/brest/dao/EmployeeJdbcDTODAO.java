@@ -81,6 +81,7 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
     public Optional<EmployeeDTO> findEmployeeById(Integer employeeId) {
         LOGGER.debug("DAO method called to find EmployeeDTO by Id: " + employeeId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("employeeId", employeeId);
-        return Optional.of(jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor).get(0));
+        List<EmployeeDTO> employees = jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor);
+        return employees.isEmpty() ? Optional.empty() : Optional.of(employees.get(0));
     }
 }

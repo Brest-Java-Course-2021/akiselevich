@@ -75,7 +75,7 @@ class EmployeeJdbcDAOTest {
     }
 
     @Test
-    public void createNewEmployeeWithoutEmployeeTest(){
+    public void createNewEmployeeWithoutRolesTest(){
         Employee newEmployee = new Employee(
                 null,
                 "ivan",
