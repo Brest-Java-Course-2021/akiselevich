@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,6 +27,12 @@ public class ProjectDTOServiceImpl implements ProjectDTOService {
     public List<ProjectDTO> findAll() {
         LOGGER.debug("Service method called to find all Project with employee count");
         return projectDTODAO.findAllProjectWithEmployeeCount();
+    }
+
+    @Override
+    public Optional<ProjectDTO> findById(Integer projectId) {
+        LOGGER.debug("Service method called to find Project with employee count by Id: " + projectId);
+        return projectDTODAO.findProjectWithEmployeeById(projectId);
     }
 
 }

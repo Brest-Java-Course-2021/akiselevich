@@ -8,16 +8,15 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
@@ -26,6 +25,9 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
 
     @Value("${employeeDto.findAllEmployees}")
     private String selectSql;
+
+    @Value("${employeeDto.findEmployeeById}")
+    private  String selectByIdSql;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ResultSetExtractor<List<EmployeeDTO>> setExtractor;
@@ -73,5 +75,12 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
     public List<EmployeeDTO> findAllEmployee() {
         LOGGER.debug("DAO method called to find all EmployeesDTO");
         return jdbcTemplate.query(selectSql, setExtractor);
+    }
+
+    @Override
+    public Optional<EmployeeDTO> findEmployeeById(Integer employeeId) {
+        LOGGER.debug("DAO method called to find EmployeeDTO by Id: " + employeeId);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("employeeId", employeeId);
+        return Optional.of(jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor).get(0));
     }
 }

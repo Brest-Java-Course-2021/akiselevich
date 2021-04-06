@@ -1,4 +1,4 @@
-package com.epam.brest;
+package com.epam.brest.test_db;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

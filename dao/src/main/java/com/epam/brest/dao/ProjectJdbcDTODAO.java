@@ -9,17 +9,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProjectJdbcDTODAO  implements ProjectDTODAO {
@@ -28,6 +27,9 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
 
     @Value("${projectDto.findAllWithCountOfEmployees}")
     private String selectSql;
+
+    @Value("${projectDto.findProjectWithEmployeeById}")
+    private String selectByIdSql;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final ResultSetExtractor<List<ProjectDTO>> setExtractor;
@@ -101,5 +103,12 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
     public List<ProjectDTO> findAllProjectWithEmployeeCount() {
         LOGGER.debug("DAO method called to find all ProjectDTO");
         return jdbcTemplate.query(selectSql, setExtractor);
+    }
+
+    @Override
+    public Optional<ProjectDTO> findProjectWithEmployeeById(Integer projectId) {
+        LOGGER.debug("DAO method called to find ProjectDTO by Id");
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("projectId", projectId);
+        return Optional.of(jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor).get(0));
     }
 }

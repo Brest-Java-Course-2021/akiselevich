@@ -1,7 +1,6 @@
 package com.epam.brest.dao;
 
-import com.epam.brest.SpringJdbcConfig;
-import com.epam.brest.dao.RoleJdbcDAO;
+import com.epam.brest.test_db.SpringJdbcConfig;
 import com.epam.brest.model.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +33,14 @@ class RoleJdbcDAOTest {
     }
 
     @Test
-    public void findExistEmployeeTest(){
+    public void findExistRoleTest(){
         Optional<Role> role = roleJdbcDAO.findById(1);
         assertTrue(role.isPresent());
         assertEquals("Project Manager", role.get().getRoleName());
     }
 
     @Test
-    public void findNotExistEmployeeTest(){
+    public void findNotExistRoleTest(){
         Optional<Role> role = roleJdbcDAO.findById(9999);
         assertTrue(role.isEmpty());
     }
@@ -71,13 +70,13 @@ class RoleJdbcDAOTest {
     }
 
     @Test
-    public void deleteExistEmployee(){
+    public void deleteExistRole(){
         roleJdbcDAO.delete(1);
         assertEquals(2,roleJdbcDAO.findAll().size());
     }
 
     @Test
-    public void deleteNotExistEmployee(){
+    public void deleteNotExistRole(){
         assertThrows(IllegalArgumentException.class, () -> {
             roleJdbcDAO.delete(999);
         });
