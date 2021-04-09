@@ -188,7 +188,23 @@ deleteClick = () => {
     }
     var targetElementId = targetButtonId.split("#")[1];
     document.getElementById(targetElementId).remove();
+    changeTrId();
+    changeDeleteButtonId();
     changeEmployeeList();
+}
+
+changeTrId = () => {
+    var rows = document.getElementById('employeesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].id = i;
+    }
+}
+
+changeDeleteButtonId = () => {
+    var rows = document.getElementById('employeesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0].id = `deleteEmployee#${i}`;
+    }
 }
 
 changeEmployeeList = () => {
