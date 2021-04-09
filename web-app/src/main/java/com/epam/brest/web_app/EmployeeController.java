@@ -1,9 +1,11 @@
 package com.epam.brest.web_app;
 
 import com.epam.brest.model.Employee;
+import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.service.EmployeeDTOService;
 import com.epam.brest.service.EmployeeService;
+import com.epam.brest.service.RoleService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class EmployeeController {
@@ -23,9 +26,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeDTOService employeeDTOService, EmployeeService employeeService) {
+    private final RoleService roleService;
+
+    public EmployeeController(EmployeeDTOService employeeDTOService, EmployeeService employeeService, RoleService roleService) {
         this.employeeDTOService = employeeDTOService;
         this.employeeService = employeeService;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = "/employees")
@@ -41,11 +47,23 @@ public class EmployeeController {
         Optional<EmployeeDTO> optionalEmployee = employeeDTOService.findById(id);
         if (optionalEmployee.isPresent()) {
             model.addAttribute("isNew", false);
-            model.addAttribute("employee", optionalEmployee.get());
+            model.addAttribute("employee", new Employee(
+                    optionalEmployee.get().getEmployeeId(),
+                    optionalEmployee.get().getFirstName(),
+                    optionalEmployee.get().getLastName(),
+                    optionalEmployee.get().getMiddleName(),
+                    optionalEmployee.get().getEmail(),
+                    optionalEmployee.get().getRoles() == null
+                            ? null
+                            : optionalEmployee.get().getRoles()
+                                .stream()
+                                .map(Role::getRoleId)
+                                .collect(Collectors.toList())));
+            model.addAttribute("roleList", roleService.findAll());
             return "employee";
         } else {
             // TODO not found error
-            return "redirect:employees";
+            return "redirect:/employees";
         }
     }
 
@@ -54,6 +72,7 @@ public class EmployeeController {
         LOGGER.debug("Controller method called to view AddPage Employee");
         model.addAttribute("isNew", true);
         model.addAttribute("employee", new Employee());
+        model.addAttribute("roleList", roleService.findAll());
         return "employee";
     }
 

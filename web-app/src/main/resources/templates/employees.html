@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="../../resources/static//css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <script src="../../resources/static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+    <!--Favicons-->
+
+    <script src="https://kit.fontawesome.com/35e781efde.js"
+            th:src="@{https://kit.fontawesome.com/35e781efde.js}" th:crossorigin="anonymous" ></script>
+    <script src="https://kit.fontawesome.com/35e781efde.js" crossorigin="anonymous"></script>
+
+    <title>Employees</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./projects.html" th:href="@{/projects}"><i class="fas fa-tasks"></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./projects.html" th:href="@{/projects}">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="./employees.html"  th:href="@{/employees}">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./roles.html" th:href="@{/roles}">Roles</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container mt-4">
+    <div class="row">
+
+        <h2>Employees</h2>
+        <hr />
+
+        <table class="table table-striped" id="employeesTable">
+            <thead>
+                <tr>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">MiddleName</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col" class="text-end">
+                        <a href="./employee.html" th:href="@{/employee}" role="button" class="btn btn-outline-success"><i class="fas fa-plus"></i></a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="employee : ${employees}" th:id="${employee.employeeId}">
+                    <td scope="row" th:text="${employee.firstName}">Ivan</td>
+                    <td scope="row" th:text="${employee.lastName}">Ivanov</td>
+                    <td scope="row" th:text="${employee.middleName}">Ivanovich</td>
+                    <td scope="row" th:text="${employee.email}">ivanov_ivan@gmail.com</td>
+                    <td scope="row">
+                        <div th:each="role: ${employee.roles}">
+                            <p th:text="${role.roleName}">Project Manager</p>
+                        </div>
+                    </td>
+                    <td class="text-end">
+                        <a href="./employee.html"
+                           th:href="@{|/employee/${employee.employeeId}|}"
+                           role="button"
+                           class="btn btn-outline-warning">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        <a role="button"
+                           class="btn btn-outline-danger"
+                           tabindex="0"
+                           data-bs-toggle="modal"
+                           data-bs-target="#deleteModalWindow"
+                           th:attr="data-bs-deleteId=${employee.employeeId}, data-bs-deleteUrl=employee">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<footer class="footer mt-auto py-2 bg-dark fixed-bottom">
+    <div class="container">
+        <span class="text-muted">&copy 2021</span>
+    </div>
+</footer>
+
+<section id="modalWindows">
+    <div class="modal fade" id="deleteModalWindow" tabindex="-1" aria-labelledby="deleteModalWindowLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Please confirm your action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the entry?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalCancelButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Сancel</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteRecordConfirm()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+<!--JavaScript-->
+<script type="text/javascript" src="./js/modal.js"></script>
+
+</html>

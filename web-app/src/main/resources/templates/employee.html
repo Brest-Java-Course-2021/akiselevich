@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="../../resources/static//css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <script src="../../resources/static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+    <!--Favicons-->
+    <script src="https://kit.fontawesome.com/35e781efde.js"
+            th:src="@{https://kit.fontawesome.com/35e781efde.js}" th:crossorigin="anonymous" ></script>
+    <script src="https://kit.fontawesome.com/35e781efde.js" crossorigin="anonymous"></script>
+
+    <title>Employee</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./projects.html" th:href="@{/projects}"><i class="fas fa-tasks"></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./projects.html" th:href="@{/projects}">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./employees.html" th:href="@{/employees}">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./roles.html" th:href="@{/roles}">Roles</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container my-4 pb-4">
+    <div class="row">
+
+        <h2 th:text="${isNew} ? 'New Employee' : 'Edit Employee'">Edit Employee</h2>
+        <hr />
+
+        <div class="row">
+            <form id="employeeForm"
+                  th:object="${employee}"
+                  action="employees.html"
+                  th:action="@{${#httpServletRequest.servletPath}}"
+                  th:method="@{post}">
+
+                <div>
+
+                    <input id="field_employeeId"
+                           type="hidden"
+                           th:field="*{employeeId}"/>
+
+                    <div class="mt-2">
+                        <label for="firstNameInput"
+                               class="form-label">First Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="firstNameInput"
+                               placeholder="Ivan"
+                               th:field="*{firstName}">
+                    </div>
+
+                    <div class="mt-2">
+                        <label for="lastNameInput"
+                               class="form-label">Last Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="lastNameInput"
+                               placeholder="Ivanov"
+                               th:field="*{lastName}">
+                    </div>
+
+                    <div class="mt-2">
+                        <label for="middleNameInput"
+                               class="form-label">Middle Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="middleNameInput"
+                               placeholder="Ivanovich"
+                               th:field="*{middleName}">
+                    </div>
+
+                    <div class="mt-2">
+                        <label for="emailInput"
+                               class="form-label">Email:</label>
+                        <input type="email"
+                               class="form-control"
+                               id="emailInput"
+                               placeholder="name@example.com"
+                               th:field="*{email}">
+                    </div>
+
+                    <div class="mt-2">
+
+                        <table class="table table-striped" id="rolesTable">
+                            <datalist id="roleOptions">
+                                <option th:each="role,i : ${roleList}"
+                                        th:value="${role.roleId}"
+                                        th:text="${role.roleName}">
+                            </datalist>
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Roles:</th>
+                                    <th scope="col" class="text-end">
+                                        <a id="addRole"
+                                           role="button"
+                                           class="btn btn-outline-secondary"
+                                           onclick="addClick()">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="role, i: ${employee.roleId}" th:id="${role}">
+                                    <td scope="row">
+                                        <input class="form-control col"
+                                               type="text"
+                                               th:field="*{roleId[__${i.index}__]}"
+                                               list="roleOptions"
+                                               placeholder="Project Manager">
+                                    </td>
+                                    <td scope="row" class="text-end col-1">
+                                        <a th:id="${'deleteRole#' + role}"
+                                           onclick="deleteClick()"
+                                           role="button"
+                                           class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <a href="./employees.html"
+                           th:href="@{/employees}"
+                           role="button"
+                           class="btn btn-outline-primary">Back</a>
+                        <a href="#"
+                           th:href="@{/employees}"
+                           role="button"
+                           class="btn btn-outline-success"
+                           th:onclick="@{document.forms['employeeForm'].submit(); return false;}">Submit</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer class="footer mt-5 py-2 bg-dark fixed-bottom">
+    <div class="container">
+        <span class="text-muted">&copy 2021</span>
+    </div>
+</footer>
+
+</body>
+<script>
+    addClick = () => {
+   var table = document.getElementById('rolesTable');
+   var tbody = table.lastElementChild;
+   var lastElementId;
+   if(tbody.lastElementChild == null){
+        lastElementId = 0;
+   } else {
+        lastElementId = tbody.lastElementChild.getAttribute('id');
+   }
+   var newElementId = parseInt(lastElementId) + 1;
+
+   var newElementDeleteButton = getDeleteButton(newElementId);
+   var newRecord = getNewRecord(newElementId, newElementDeleteButton);
+
+   tbody.innerHTML += newRecord;
+}
+
+deleteClick = () => {
+    var target = event.target;
+    var targetButtonId;
+    if(target.tagName == 'I'){
+        targetButtonId = target.parentElement.getAttribute('id');
+    } else if(target.tagName == 'A'){
+        targetButtonId = target.getAttribute('id');
+    }
+    var targetElementId = targetButtonId.split("#")[1];
+    document.getElementById(targetElementId).remove();
+    changeTrId();
+    changeDeleteButtonId();
+    changeRoleList();
+}
+
+changeTrId = () => {
+    var rows = document.getElementById('rolesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].id = i;
+    }
+}
+
+changeDeleteButtonId = () => {
+    var rows = document.getElementById('rolesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0].id = `deleteRole#${i}`;
+    }
+}
+
+changeRoleList = () => {
+    var rows = document.getElementById('rolesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].getElementsByTagName('td')[0].getElementsByTagName('input')[0].id = `roleId${i-1}`;
+        rows[i].getElementsByTagName('td')[0].getElementsByTagName('input')[0].name = `roleId[${i-1}]`;
+    }
+}
+
+getDeleteButton = (id) => {
+    return `<a id="deleteRole#${id}"
+   onclick="deleteClick()"
+   role="button"
+   class="btn btn-outline-danger">
+   <i class="fas fa-trash"></i>
+</a>`;
+}
+
+getNewRecord = (newRecordId, deleteButton) => {
+    return `<tr id="${newRecordId}">
+                <td scope="row">
+                    <input class="form-control col" list="roleOptions" placeholder="Project Manager" id="roleId${newRecordId-1}" name="roleId[${newRecordId-1}]">
+                </td>
+                <td scope="row" class="col-1 text-end">
+                    ${deleteButton}
+                </td>
+            </tr>`;
+}
+</script>
+</html>

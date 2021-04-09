@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProjectJdbcDTODAO  implements ProjectDTODAO {
@@ -47,11 +48,13 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
                     LocalDateTime startDate = resultSet.getObject("startDate", LocalDateTime.class);
                     LocalDateTime finishDate = resultSet.getObject("finishDate", LocalDateTime.class);
                     Integer employeeId = resultSet.getInt("employeeId");
+                    employeeId = employeeId == 0 ? null : employeeId;
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
                     String middleName = resultSet.getString("middleName");
                     String email = resultSet.getString("email");
                     Integer roleId = resultSet.getInt("roleId");
+                    roleId = roleId == 0 ? null : roleId;
                     String roleName = resultSet.getString("roleName");
                     Integer numberOfEmployee = resultSet.getInt("numberOfEmployee");
 
@@ -94,7 +97,21 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
                     employees.get(employeeId).setEmail(email);
                     employees.get(employeeId).getRoles().add(new Role(roleId,roleName));
                 }
-                return  List.copyOf(data.values());
+                return  List.copyOf(data.values())
+                        .stream()
+                        .peek(projectDTO ->
+                                projectDTO.setEmployees(
+                                        projectDTO.getEmployees().get(0).getEmployeeId() == null
+                                                ? null
+                                                : projectDTO.getEmployees()
+                                                    .stream()
+                                                    .peek(employeeDTO ->
+                                                        employeeDTO.setRoles(
+                                                                employeeDTO.getRoles().get(0).getRoleId() == null
+                                                                        ? null
+                                                                        : employeeDTO.getRoles()))
+                                                    .collect(Collectors.toList())))
+                        .collect(Collectors.toList());
             }
         };
     }

@@ -1,7 +1,9 @@
 package com.epam.brest.web_app;
 
 import com.epam.brest.model.Project;
+import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.model.dto.ProjectDTO;
+import com.epam.brest.service.EmployeeService;
 import com.epam.brest.service.ProjectDTOService;
 import com.epam.brest.service.ProjectService;
 import org.apache.commons.logging.Log;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProjectController {
@@ -20,12 +23,13 @@ public class ProjectController {
     private static final Log LOGGER = LogFactory.getLog(ProjectController.class);
 
     private final ProjectDTOService projectDTOService;
-
     private final ProjectService projectService;
+    private final EmployeeService employeeService;
 
-    public ProjectController(ProjectDTOService projectDTOService, ProjectService projectService) {
+    public ProjectController(ProjectDTOService projectDTOService, ProjectService projectService, EmployeeService employeeService) {
         this.projectDTOService = projectDTOService;
         this.projectService = projectService;
+        this.employeeService = employeeService;
     }
 
     @GetMapping(value = "/projects")
@@ -41,11 +45,22 @@ public class ProjectController {
         Optional<ProjectDTO> optionalProject = projectDTOService.findById(id);
         if (optionalProject.isPresent()) {
             model.addAttribute("isNew", false);
-            model.addAttribute("project", optionalProject.get());
+            model.addAttribute("project", new Project(
+                    optionalProject.get().getProjectId(),
+                    optionalProject.get().getProjectName(),
+                    optionalProject.get().getStartDate(),
+                    optionalProject.get().getFinishDate(),
+                    optionalProject.get().getEmployees() == null
+                            ? null
+                            : optionalProject.get().getEmployees()
+                                .stream()
+                                .map(EmployeeDTO::getEmployeeId)
+                                .collect(Collectors.toList())));
+            model.addAttribute("employeeList", employeeService.findAll());
             return "project";
         } else {
             // TODO not found error
-            return "redirect:projects";
+            return "redirect:/projects";
         }
     }
 
@@ -54,6 +69,7 @@ public class ProjectController {
         LOGGER.debug("Controller method called to view AddPage Project");
         model.addAttribute("isNew", true);
         model.addAttribute("project", new Project());
+        model.addAttribute("employeeList", employeeService.findAll());
         return "project";
     }
 
