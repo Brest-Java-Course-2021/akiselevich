@@ -27,7 +27,7 @@ class ProjectJdbcDTODAOTest {
 
     @Test
     public void findAllProjectTest(){
-        List<ProjectDTO> projects = projectDAO.findAllProjectWithEmployeeCount();
+        List<ProjectDTO> projects = projectDAO.findAllProjectWithEmployeeCount(null);
         assertNotNull(projects);
         assertTrue(projects.size() > 0);
     }

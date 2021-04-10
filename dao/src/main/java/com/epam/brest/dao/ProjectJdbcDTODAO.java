@@ -1,6 +1,7 @@
 package com.epam.brest.dao;
 
 import com.epam.brest.ProjectDTODAO;
+import com.epam.brest.model.Filter;
 import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.model.dto.ProjectDTO;
@@ -18,6 +19,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -117,9 +119,17 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
     }
 
     @Override
-    public List<ProjectDTO> findAllProjectWithEmployeeCount() {
+    public List<ProjectDTO> findAllProjectWithEmployeeCount(Filter filter) {
         LOGGER.debug("DAO method called to find all ProjectDTO");
-        return jdbcTemplate.query(selectSql, setExtractor);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
+                Map.of("startDate", filter.getStartDate() == null
+                                ? "0000-01-01"
+                                : filter.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        "finishDate", filter.getFinishDate() == null
+                                ? "9999-12-31"
+                                : filter.getFinishDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+        );
+        return jdbcTemplate.query(selectSql,sqlParameterSource, setExtractor);
     }
 
     @Override

@@ -39,8 +39,10 @@ public class RoleController {
             model.addAttribute("role", optionalRole.get());
             return "role";
         } else {
-            // TODO not found error
-            return "redirect:roles";
+            model.addAttribute("statusCodeName", "Bad Request");
+            model.addAttribute("statusCode", "400".toCharArray());
+            model.addAttribute("errorMessage", "Role with id: " + id + ", not found");
+            return "error";
         }
     }
 

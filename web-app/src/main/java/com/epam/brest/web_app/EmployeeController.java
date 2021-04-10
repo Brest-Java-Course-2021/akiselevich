@@ -62,8 +62,10 @@ public class EmployeeController {
             model.addAttribute("roleList", roleService.findAll());
             return "employee";
         } else {
-            // TODO not found error
-            return "redirect:/employees";
+            model.addAttribute("statusCodeName", "Bad Request");
+            model.addAttribute("statusCode", "400".toCharArray());
+            model.addAttribute("errorMessage", "Employee with id: " + id + ", not found");
+            return "error";
         }
     }
 
@@ -77,17 +79,31 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "/employee")
-    public String addEmployee(Employee employee) {
-        LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
-        employeeService.create(employee);
-        return "redirect:/employees";
+    public String addEmployee(Employee employee,Model model) {
+        try{
+            LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+            employeeService.create(employee);
+            return "redirect:/employees";
+        }catch (IllegalArgumentException ex){
+            model.addAttribute("statusCodeName", "Bad Request");
+            model.addAttribute("statusCode", "400".toCharArray());
+            model.addAttribute("errorMessage", "Employee with email: " + employee.getEmail() + " already exist");
+            return "error";
+        }
     }
 
     @PostMapping(value = "/employee/{id}")
-    public String updateEmployee(Employee employee) {
-        LOGGER.debug("Controller method called to update Employee: " + employee.toString());
-        employeeService.update(employee);
-        return "redirect:/employees";
+    public String updateEmployee(Employee employee, Model model) {
+        try{
+            LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+            employeeService.update(employee);
+            return "redirect:/employees";
+        }catch (IllegalArgumentException ex){
+            model.addAttribute("statusCodeName", "Bad Request");
+            model.addAttribute("statusCode", "400".toCharArray());
+            model.addAttribute("errorMessage", "Employee with email: " + employee.getEmail() + " already exist");
+            return "error";
+        }
     }
 
     @GetMapping(value = "/employee/{id}/delete")

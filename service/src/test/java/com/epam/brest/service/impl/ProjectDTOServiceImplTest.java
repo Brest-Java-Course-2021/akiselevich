@@ -31,7 +31,7 @@ class ProjectDTOServiceImplTest {
 
     @Test
     public void shouldFindAllProjects(){
-        List<ProjectDTO> projectDTOList = projectDTOService.findAll();
+        List<ProjectDTO> projectDTOList = projectDTOService.findAll(null);
         assertTrue(projectDTOList.size() > 0);
     }
 
