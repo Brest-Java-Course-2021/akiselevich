@@ -62,24 +62,23 @@
 
                 <div class="mb-3">
 
-                    <label for="roleNameInput"
-                           class="form-label">Role Name:</label>
-                    <input type="text"
-                           class="form-control"
-                           id="roleNameInput"
-                           placeholder="Java Software Engineer"
-                           th:field="*{roleName}">
+                    <div>
+                        <label for="roleNameInput"
+                               class="form-label">Role Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="roleNameInput"
+                               placeholder="Java Software Engineer"
+                               th:field="*{roleName}">
+                    </div>
 
                     <div class="mt-4 text-end">
                         <a href="./roles.html"
                            th:href="@{/roles}"
                            role="button"
                            class="btn btn-outline-primary">Back</a>
-                        <a href="./roles.html"
-                           th:href="@{/roles}"
-                           role="button"
-                           class="btn btn-outline-success"
-                           th:onclick="@{document.forms['roleForm'].submit(); return false;}">Submit</a>
+                        <button class="btn btn-outline-success"
+                                type="submit">Submit</button>
                     </div>
 
                 </div>
@@ -96,4 +95,22 @@
 </footer>
 
 </body>
+
+<script src="../../resources/static/js/bootstrap-validate.js"
+        th:src="@{/js/bootstrap-validate.js}"></script>
+<script>
+   bootstrapValidate('#roleNameInput','min:1:Enter at least 1 characters!');
+
+    roleNameInput = document.getElementById('roleNameInput');
+    form = document.getElementById('roleForm');
+
+    form.addEventListener('submit', function (event) {
+        if(roleNameInput.classList.contains('is-invalid') || roleNameInput.value == ""){
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            document.forms['roleForm'].submit();
+        }
+    });
+</script>
 </html>

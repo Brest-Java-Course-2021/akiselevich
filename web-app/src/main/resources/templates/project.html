@@ -77,7 +77,7 @@
                         <input type="text"
                                class="form-control"
                                id="startDateInput"
-                               placeholder="01.01.2000, 00:00"
+                               placeholder="2000-12-30"
                                th:field="*{startDate}">
                     </div>
 
@@ -87,7 +87,7 @@
                         <input type="text"
                                class="form-control"
                                id="finishDateInput"
-                               placeholder="01.01.2000, 00:00"
+                               placeholder="2000-12-30"
                                th:field="*{finishDate}">
                     </div>
 
@@ -141,11 +141,8 @@
                            th:href="@{/projects}"
                            role="button"
                            class="btn btn-outline-primary">Back</a>
-                        <a href="#"
-                           th:href="@{/projects}"
-                           role="button"
-                           class="btn btn-outline-success"
-                           th:onclick="@{document.forms['projectForm'].submit(); return false;}">Submit</a>
+                        <button class="btn btn-outline-success"
+                                type="submit">Submit</button>
                     </div>
                 </div>
             </form>
@@ -160,8 +157,31 @@
 </footer>
 
 </body>
+<script src="../../resources/static/js/bootstrap-validate.js"
+               th:src="@{/js/bootstrap-validate.js}"></script>
 <script>
-    addClick = () => {
+   bootstrapValidate('#projectNameInput','min:1:Enter at least 1 characters!');
+   bootstrapValidate('#startDateInput','ISO8601:Need format YYYY-MM-DD');
+   bootstrapValidate('#finishDateInput','ISO8601:Need format YYYY-MM-DD');
+
+    projectNameInput = document.getElementById('projectNameInput');
+    startDateInput = document.getElementById('startDateInput');
+    finishDateInput = document.getElementById('finishDateInput');
+
+    form = document.getElementById('projectForm');
+
+    form.addEventListener('submit', function (event) {
+        if((projectNameInput.classList.contains('is-invalid') || projectNameInput.value == "")
+            || (startDateInput.classList.contains('is-invalid') || startDateInput.value == "")
+            || (finishDateInput.classList.contains('is-invalid') || finishDateInput.value == "")){
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            document.forms['projectForm'].submit();
+        }
+    });
+
+   addClick = () => {
    var table = document.getElementById('employeesTable');
    var tbody = table.lastElementChild;
    var lastElementId;

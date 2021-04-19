@@ -1,5 +1,6 @@
 package com.epam.brest.model.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -7,15 +8,15 @@ import java.util.Objects;
 public class ProjectDTO {
     private Integer projectId;
     private String projectName;
-    private LocalDateTime startDate;
-    private LocalDateTime finishDate;
+    private LocalDate startDate;
+    private LocalDate finishDate;
     private List<EmployeeDTO> employees;
     private Integer numberOfEmployees;
 
     public ProjectDTO() {
     }
 
-    public ProjectDTO(Integer projectId, String projectName, LocalDateTime startDate, LocalDateTime finishDate, List<EmployeeDTO> employees, Integer numberOfEmployees) {
+    public ProjectDTO(Integer projectId, String projectName, LocalDate startDate, LocalDate finishDate, List<EmployeeDTO> employees, Integer numberOfEmployees) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.startDate = startDate;
@@ -40,19 +41,19 @@ public class ProjectDTO {
         this.projectName = projectName;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getFinishDate() {
+    public LocalDate getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(LocalDateTime finishDate) {
+    public void setFinishDate(LocalDate finishDate) {
         this.finishDate = finishDate;
     }
 

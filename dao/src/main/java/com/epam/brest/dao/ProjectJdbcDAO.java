@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -55,12 +55,12 @@ public class ProjectJdbcDAO implements ProjectDAO {
         this.setExtractor = new ResultSetExtractor<List<Project>>() {
             @Override
             public List<Project> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-                Map<Integer, Project> data = new LinkedHashMap<>();
+                Map<Integer, Project> data = new LinkedHashMap<Integer, Project>();
                 while (resultSet.next()){
                     Integer projectId = resultSet.getInt("projectId");
                     String projectName = resultSet.getString("projectName");
-                    LocalDateTime startDate = resultSet.getObject("startDate", LocalDateTime.class);
-                    LocalDateTime finishDate = resultSet.getObject("finishDate", LocalDateTime.class);
+                    LocalDate startDate = resultSet.getObject("startDate", LocalDate.class);
+                    LocalDate finishDate = resultSet.getObject("finishDate", LocalDate.class);
                     Integer employeeId = resultSet.getInt("employeeId");
 
                     data.putIfAbsent(
@@ -113,13 +113,16 @@ public class ProjectJdbcDAO implements ProjectDAO {
 
         if(project.getEmployeeId() != null) {
             try{
-                project.getEmployeeId().forEach(employeeId -> {
-                    SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
-                            Map.of("projectId", projectId,
-                                    "employeeId", employeeId)
-                    );
-                    jdbcTemplate.update(createPESql, employeeSqlParameterSource, keyHolder);
-                });
+                project.getEmployeeId()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(employeeId -> {
+                            SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
+                                    Map.of("projectId", projectId,
+                                            "employeeId", employeeId)
+                            );
+                            jdbcTemplate.update(createPESql, employeeSqlParameterSource, keyHolder);
+                        });
             }catch (DataIntegrityViolationException ex){
                 throw new IllegalArgumentException("Employees with Id:" + project.getEmployeeId().toString() + " not exist");
             }
@@ -150,13 +153,16 @@ public class ProjectJdbcDAO implements ProjectDAO {
             jdbcTemplate.update(deletePESql, sqlParameterSource);
 
             if(project.getEmployeeId() != null) {
-                project.getEmployeeId().forEach(employeeId -> {
-                    SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
-                            Map.of("projectId", projectId,
-                                    "employeeId", employeeId)
-                    );
-                    jdbcTemplate.update(createPESql, employeeSqlParameterSource, keyHolder);
-                });
+                project.getEmployeeId()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(employeeId -> {
+                            SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
+                                    Map.of("projectId", projectId,
+                                            "employeeId", employeeId)
+                            );
+                            jdbcTemplate.update(createPESql, employeeSqlParameterSource, keyHolder);
+                        });
             }
         }catch (NullPointerException ex){
             throw new IllegalArgumentException("Project with Id:" + project.getProjectId() + " not exist");

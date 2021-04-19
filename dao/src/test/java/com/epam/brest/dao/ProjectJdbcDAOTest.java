@@ -1,8 +1,8 @@
 package com.epam.brest.dao;
 
 import com.epam.brest.ProjectDAO;
-import com.epam.brest.test_db.SpringJdbcConfig;
 import com.epam.brest.model.Project;
+import com.epam.brest.test_db.SpringJdbcConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +50,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void createNewProjectTest(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(null,"abc", currentTime, currentTime, List.of(1,2));
         Optional<Project> createdProject = projectDAO.create(newProject);
         assertTrue(createdProject.isPresent());
@@ -59,7 +59,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void createNewProjectWithoutEmployeeTest(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(null,"abc", currentTime, currentTime, null);
         Optional<Project> createdProject = projectDAO.create(newProject);
         assertTrue(createdProject.isPresent());
@@ -68,7 +68,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void createNewProjectWithNotExistEmployeeTest(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(null,"abc", currentTime, currentTime, List.of(9999,999));
         assertThrows(IllegalArgumentException.class, () -> {
             Optional<Project> createdProject = projectDAO.create(newProject);
@@ -77,7 +77,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void updateExistProject(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(1,"abc", currentTime, currentTime, List.of(2,3));
         Optional<Project> createdProject = projectDAO.update(newProject);
         assertTrue(createdProject.isPresent());
@@ -86,7 +86,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void updateNotExistProject(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(9999,"abc", currentTime, currentTime, List.of(2,3));
         assertThrows(IllegalArgumentException.class, () -> {
             projectDAO.update(newProject);
@@ -95,7 +95,7 @@ class ProjectJdbcDAOTest {
 
     @Test
     public void updateExistProjectWithNotExistEmployee(){
-        LocalDateTime currentTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+        LocalDate currentTime = LocalDate.of(2015, Month.JULY, 29);
         Project newProject = new Project(1,"abc", currentTime, currentTime, List.of(9999,999));
         assertThrows(IllegalArgumentException.class, () -> {
             Optional<Project> createdProject = projectDAO.update(newProject);

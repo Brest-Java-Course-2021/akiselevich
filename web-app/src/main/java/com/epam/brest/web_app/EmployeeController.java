@@ -80,30 +80,16 @@ public class EmployeeController {
 
     @PostMapping(value = "/employee")
     public String addEmployee(Employee employee,Model model) {
-        try{
-            LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
-            employeeService.create(employee);
-            return "redirect:/employees";
-        }catch (IllegalArgumentException ex){
-            model.addAttribute("statusCodeName", "Bad Request");
-            model.addAttribute("statusCode", "400".toCharArray());
-            model.addAttribute("errorMessage", "Employee with email: " + employee.getEmail() + " already exist");
-            return "error";
-        }
+        LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+        employeeService.create(employee);
+        return "redirect:/employees";
     }
 
     @PostMapping(value = "/employee/{id}")
     public String updateEmployee(Employee employee, Model model) {
-        try{
-            LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
-            employeeService.update(employee);
-            return "redirect:/employees";
-        }catch (IllegalArgumentException ex){
-            model.addAttribute("statusCodeName", "Bad Request");
-            model.addAttribute("statusCode", "400".toCharArray());
-            model.addAttribute("errorMessage", "Employee with email: " + employee.getEmail() + " already exist");
-            return "error";
-        }
+        LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+        employeeService.update(employee);
+        return "redirect:/employees";
     }
 
     @GetMapping(value = "/employee/{id}/delete")

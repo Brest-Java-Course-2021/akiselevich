@@ -50,45 +50,44 @@
         <h2>Projects</h2>
         <hr />
 
-        <form class="mb-3">
-            <div class="row">
-                <div class="col d-flex">
-                    <div class="me-2">
-                        <h4>Filter:</h4>
+        <div class="d-flex">
+            <div class="me-2">
+                <h4>Filter:</h4>
+            </div>
+
+            <form id="projectsForm"
+                  class="flex-grow-1"
+                  th:object="${filter}"
+                  action="projects.html"
+                  th:action="@{${#httpServletRequest.servletPath}}"
+                  th:method="@{get}">
+
+                <div class="d-flex">
+                    <div class="flex-grow-1 me-2">
+                        <input id="startDate"
+                               type="text"
+                               class="form-control"
+                               placeholder="Start Date"
+                               aria-label="Start Date"
+                               th:field="*{startDate}">
                     </div>
 
-                    <form id="projectsForm"
-                          th:object="${filter}"
-                          action="projects.html"
-                          th:action="@{${#httpServletRequest.servletPath}}"
-                          th:method="@{get}">
+                    <div class="flex-grow-1 me-2">
+                        <input id="finishDate"
+                               type="text"
+                               class="form-control"
+                               placeholder="Finish Date"
+                               aria-label="Finish Date"
+                               th:field="*{finishDate}">
+                    </div>
 
-                        <div class="me-2 flex-grow-1">
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Start Date"
-                                   aria-label="Start Date"
-                                   th:field="*{startDate}">
-                        </div>
-
-                        <div class="me-2 flex-grow-1">
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Finish Date"
-                                   aria-label="Finish Date"
-                                   th:field="*{finishDate}">
-                        </div>
-
-                        <div>
-                            <button class="btn btn-primary"
-                                    type="submit"
-                                    th:onclick="@{document.forms['projectsForm'].submit(); return false;}">Filter</button>
-                        </div>
-
-                    </form>
+                    <div>
+                        <button class="btn btn-primary float-end"
+                                type="submit">Filter</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
 
         <table class="table table-striped" id="projectsTable">
             <thead>
@@ -106,8 +105,8 @@
             <tbody>
                 <tr th:each="project : ${projects}" th:id="${project.projectId}">
                     <td scope="row" th:text="${project.projectName}" >Price Calculator</td>
-                    <td scope="row" th:text="${#temporals.format(project.startDate, 'yyyy-MM-dd hh:mm:ss')}" >01.02.2020</td>
-                    <td scope="row" th:text="${#temporals.format(project.finishDate,'yyyy-MM-dd hh:mm:ss')}" >07.02.2021</td>
+                    <td scope="row" th:text="${#temporals.format(project.startDate, 'yyyy-MM-dd')}" >01.02.2020</td>
+                    <td scope="row" th:text="${#temporals.format(project.finishDate,'yyyy-MM-dd')}" >07.02.2021</td>
                     <td scope="row">
                         <table class="table table-light">
                             <thead>
@@ -182,6 +181,27 @@
 
 </body>
 <!--JavaScript-->
-<script type="text/javascript" src="./js/modal.js"></script>
+<script src="../../resources/static/js/modal.js"
+        th:src="@{/js/modal.js}"></script>
+<script src="../../resources/static/js/bootstrap-validate.js"
+        th:src="@{/js/bootstrap-validate.js}"></script>
+<script>
+    bootstrapValidate('#startDate','ISO8601:Need format YYYY-MM-DD');
+    bootstrapValidate('#finishDate','ISO8601:Need format YYYY-MM-DD');
 
+    startDate = document.getElementById('startDate');
+    finishDate = document.getElementById('finishDate');
+
+    form = document.getElementById('projectsForm');
+    form.addEventListener('submit', function (event) {
+        if((startDate.classList.contains('is-invalid') && !startDate.value == "")
+            || (finishDate.classList.contains('is-invalid') && !finishDate.value == "")){
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            document.forms['projectsForm'].submit();
+        }
+    });
+
+</script>
 </html>

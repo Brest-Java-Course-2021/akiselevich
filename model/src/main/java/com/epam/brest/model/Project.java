@@ -1,20 +1,28 @@
 package com.epam.brest.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Project {
+
     private Integer projectId;
+
     private String projectName;
-    private LocalDateTime startDate;
-    private LocalDateTime finishDate;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate startDate;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate finishDate;
+
     private List<Integer> employeeId;
 
     public Project() {
     }
 
-    public Project(Integer projectId, String projectName, LocalDateTime startDate, LocalDateTime finishDate, List<Integer> employeeId) {
+    public Project(Integer projectId, String projectName, LocalDate startDate, LocalDate finishDate, List<Integer> employeeId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.startDate = startDate;
@@ -38,19 +46,19 @@ public class Project {
         this.projectName = projectName;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getFinishDate() {
+    public LocalDate getFinishDate() {
         return finishDate;
     }
 
-    public void setFinishDate(LocalDateTime finishDate) {
+    public void setFinishDate(LocalDate finishDate) {
         this.finishDate = finishDate;
     }
 

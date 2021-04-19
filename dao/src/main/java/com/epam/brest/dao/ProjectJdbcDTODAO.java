@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,13 +42,13 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
         this.setExtractor = new ResultSetExtractor<List<ProjectDTO>>() {
             @Override
             public List<ProjectDTO> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-                Map<Integer, ProjectDTO> data = new LinkedHashMap<>();
+                Map<Integer, ProjectDTO> data = new LinkedHashMap<Integer, ProjectDTO>();
                 Map<Integer, EmployeeDTO> employees = new LinkedHashMap<>();
                 while (resultSet.next()){
                     Integer projectId = resultSet.getInt("projectId");
                     String projectName = resultSet.getString("projectName");
-                    LocalDateTime startDate = resultSet.getObject("startDate", LocalDateTime.class);
-                    LocalDateTime finishDate = resultSet.getObject("finishDate", LocalDateTime.class);
+                    LocalDate startDate = resultSet.getObject("startDate", LocalDate.class);
+                    LocalDate finishDate = resultSet.getObject("finishDate", LocalDate.class);
                     Integer employeeId = resultSet.getInt("employeeId");
                     employeeId = employeeId == 0 ? null : employeeId;
                     String firstName = resultSet.getString("firstName");
@@ -122,10 +122,10 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
     public List<ProjectDTO> findAllProjectWithEmployeeCount(Filter filter) {
         LOGGER.debug("DAO method called to find all ProjectDTO");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
-                Map.of("startDate", filter.getStartDate() == null
+                Map.of("startDate", filter == null || filter.getStartDate() == null
                                 ? "0000-01-01"
                                 : filter.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                        "finishDate", filter.getFinishDate() == null
+                        "finishDate", filter == null || filter.getFinishDate() == null
                                 ? "9999-12-31"
                                 : filter.getFinishDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         );

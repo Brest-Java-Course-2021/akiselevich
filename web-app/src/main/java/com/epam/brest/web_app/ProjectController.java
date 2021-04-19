@@ -9,12 +9,15 @@ import com.epam.brest.service.ProjectDTOService;
 import com.epam.brest.service.ProjectService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,30 +39,17 @@ public class ProjectController {
 
     @GetMapping(value = "/projects")
     public final String projects(Model model,
-                                 @RequestParam(value = "startDate", required = false) String startDate,
-                                 @RequestParam(value = "finishDate", required = false) String finishDate) {
-        try {
-            LOGGER.debug("Controller method called to view all Project");
-            DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
+                                 @RequestParam(value = "startDate", required = false)
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                 @RequestParam(value = "finishDate", required = false)
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finishDate) {
+            LOGGER.debug("Controller method called to view all Project, startDate: " + startDate + ", finishDate: " + finishDate);
             model.addAttribute(
                     "projects",
-                    projectDTOService.findAll(
-                            new Filter(
-                                    startDate == null || startDate.equals("")
-                                            ? null
-                                            : LocalDateTime.parse(startDate, format),
-                                    finishDate == null || finishDate.equals("")
-                                            ? null
-                                            : LocalDateTime.parse(finishDate, format)))
+                    projectDTOService.findAll(new Filter(startDate, finishDate))
             );
             model.addAttribute("filter", new Filter());
             return "projects";
-        }catch (DateTimeParseException ex){
-            model.addAttribute("statusCodeName", "Bad Request");
-            model.addAttribute("statusCode", "400".toCharArray());
-            model.addAttribute("errorMessage", "filter param should be format: yyyy-MM-ddThh:mm:ss");
-            return "error";
-        }
     }
 
     @GetMapping(value = "/project/{id}")

@@ -152,11 +152,8 @@
                            th:href="@{/employees}"
                            role="button"
                            class="btn btn-outline-primary">Back</a>
-                        <a href="#"
-                           th:href="@{/employees}"
-                           role="button"
-                           class="btn btn-outline-success"
-                           th:onclick="@{document.forms['employeeForm'].submit(); return false;}">Submit</a>
+                        <button class="btn btn-outline-success"
+                                type="submit">Submit</button>
                     </div>
                 </div>
             </form>
@@ -171,8 +168,35 @@
 </footer>
 
 </body>
+<script src="../../resources/static/js/bootstrap-validate.js"
+        th:src="@{/js/bootstrap-validate.js}"></script>
 <script>
-    addClick = () => {
+
+   bootstrapValidate('#firstNameInput','min:1:Enter at least 1 characters!');
+   bootstrapValidate('#lastNameInput','min:1:Enter at least 1 characters!');
+   bootstrapValidate('#middleNameInput','min:1:Enter at least 1 characters!');
+   bootstrapValidate('#emailInput','email:Email should be of type: example@example.com');
+
+    firstNameInput = document.getElementById('firstNameInput');
+    lastNameInput = document.getElementById('lastNameInput');
+    middleNameInput = document.getElementById('middleNameInput');
+    emailInput = document.getElementById('emailInput');
+
+    form = document.getElementById('employeeForm');
+
+    form.addEventListener('submit', function (event) {
+        if((firstNameInput.classList.contains('is-invalid') || firstNameInput.value == "")
+            || (lastNameInput.classList.contains('is-invalid') || lastNameInput.value == "")
+            || (middleNameInput.classList.contains('is-invalid') || middleNameInput.value == "")
+            || (emailInput.classList.contains('is-invalid') || emailInput.value == "")){
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            document.forms['employeeForm'].submit();
+        }
+    });
+
+   addClick = () => {
    var table = document.getElementById('rolesTable');
    var tbody = table.lastElementChild;
    var lastElementId;
