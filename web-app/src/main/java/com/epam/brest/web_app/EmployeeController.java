@@ -79,7 +79,7 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "/employee")
-    public String addEmployee(Employee employee,Model model) {
+    public String addEmployee(Employee employee, Model model) {
         LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
         employeeService.create(employee);
         return "redirect:/employees";

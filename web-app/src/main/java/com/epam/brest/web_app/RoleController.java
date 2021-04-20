@@ -24,7 +24,7 @@ public class RoleController {
     }
 
     @GetMapping(value = "/roles")
-    public final String employees(Model model) {
+    public final String roles(Model model) {
         LOGGER.debug("Controller method called to view all Roles");
         model.addAttribute("roles", roleService.findAll());
         return "roles";
