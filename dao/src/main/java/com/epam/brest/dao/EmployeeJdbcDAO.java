@@ -121,13 +121,16 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
             employee.setEmployeeId(employeeId);
 
             if(employee.getRoleId() != null) {
-                employee.getRoleId().forEach(roleId -> {
-                    SqlParameterSource roleSqlParameterSource = new MapSqlParameterSource(
-                            Map.of("employeeId", employeeId,
-                                    "roleId", roleId)
-                    );
-                    jdbcTemplate.update(createERSql, roleSqlParameterSource, keyHolder);
-                });
+                employee.getRoleId()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(roleId -> {
+                            SqlParameterSource roleSqlParameterSource = new MapSqlParameterSource(
+                                    Map.of("employeeId", employeeId,
+                                            "roleId", roleId)
+                            );
+                            jdbcTemplate.update(createERSql, roleSqlParameterSource, keyHolder);
+                        });
             }
         }catch (DuplicateKeyException ex){
             throw new IllegalArgumentException("Employee with email:" + employee.getEmail() + " already exist");
@@ -161,13 +164,16 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
             jdbcTemplate.update(deleteERSql, sqlParameterSource);
 
             if(employee.getRoleId() != null) {
-                employee.getRoleId().forEach(roleId -> {
-                    SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
-                            Map.of("employeeId", employeeId,
-                                    "roleId", roleId)
-                    );
-                    jdbcTemplate.update(createERSql, employeeSqlParameterSource, keyHolder);
-                });
+                employee.getRoleId()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .forEach(roleId -> {
+                            SqlParameterSource employeeSqlParameterSource = new MapSqlParameterSource(
+                                    Map.of("employeeId", employeeId,
+                                            "roleId", roleId)
+                            );
+                            jdbcTemplate.update(createERSql, employeeSqlParameterSource, keyHolder);
+                        });
             }
         }catch (NullPointerException ex){
             throw new IllegalArgumentException("Employee with id:" + employee.getEmployeeId() + " not exist");

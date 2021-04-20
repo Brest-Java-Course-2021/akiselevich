@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="../../resources/static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}">
+    <script src="../../resources/static/js/bootstrap.bundle.min.js"
+            th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+    <!--Favicons-->
+    <script src="https://kit.fontawesome.com/35e781efde.js"
+            th:src="@{https://kit.fontawesome.com/35e781efde.js}" th:crossorigin="anonymous" ></script>
+    <script src="https://kit.fontawesome.com/35e781efde.js" crossorigin="anonymous"></script>
+
+    <title>Project</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./projects.html" th:href="@{/projects}"><i class="fas fa-tasks"></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./projects.html" th:href="@{/projects}">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./employees.html" th:href="@{/employees}">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./roles.html" th:href="@{/roles}">Roles</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container my-4 pb-4">
+    <div class="row">
+
+        <h2 th:text="${isNew} ? 'New Project' : 'Edit Project'">Edit Project</h2>
+        <hr />
+
+        <div class="row">
+            <form id="projectForm"
+                  th:object="${project}"
+                  action="projects.html"
+                  th:action="@{${#httpServletRequest.servletPath}}"
+                  th:method="@{post}">
+                <div>
+
+                    <input id="field_projectId"
+                           type="hidden"
+                           th:field="*{projectId}"/>
+
+                    <div class="mt-2">
+                        <label for="projectNameInput"
+                               class="form-label">Project Name:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="projectNameInput"
+                               placeholder="Some Project"
+                               th:field="*{projectName}">
+                    </div>
+
+                    <div class="mt-2">
+                        <label for="startDateInput"
+                               class="form-label">Start Date:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="startDateInput"
+                               placeholder="2000-12-30"
+                               th:field="*{startDate}">
+                    </div>
+
+                    <div class="mt-2">
+                        <label for="finishDateInput"
+                               class="form-label">Finish Date:</label>
+                        <input type="text"
+                               class="form-control"
+                               id="finishDateInput"
+                               placeholder="2000-12-30"
+                               th:field="*{finishDate}">
+                    </div>
+
+                    <div class="mt-2">
+
+                        <table class="table table-striped" id="employeesTable">
+                            <datalist  id="employeeOptions">
+                                <option th:each="employee,i : ${employeeList}"
+                                        th:value="${employee.employeeId}"
+                                        th:text="${employee.firstName + ' ' + employee.lastName}">
+                            </datalist>
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Employees:</th>
+                                    <th scope="col" class="text-end">
+                                        <a id="addEmployee"
+                                           role="button"
+                                           class="btn btn-outline-secondary"
+                                           onclick="addClick()">
+                                            <i class="fas fa-plus"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="employee, i: ${project.employeeId}" th:id="${employee}" >
+                                    <td scope="row">
+                                        <input class="form-control col"
+                                               type="text"
+                                               th:field="*{employeeId[__${i.index}__]}"
+                                               list="employeeOptions"
+                                               placeholder="Ivan Ivanov">
+                                    </td>
+                                    <td scope="row" class="text-end col-1">
+                                        <a th:id="${'deleteEmployee#' + employee}"
+                                           onclick="deleteClick()"
+                                           role="button"
+                                           class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <a href="./projects.html"
+                           th:href="@{/projects}"
+                           role="button"
+                           class="btn btn-outline-primary">Back</a>
+                        <button class="btn btn-outline-success"
+                                type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer class="footer mt-5 py-2 bg-dark fixed-bottom">
+    <div class="container">
+        <span class="text-muted">&copy 2021</span>
+    </div>
+</footer>
+
+</body>
+<script src="../../resources/static/js/bootstrap-validate.js"
+               th:src="@{/js/bootstrap-validate.js}"></script>
+<script>
+   bootstrapValidate('#projectNameInput','min:1:Enter at least 1 characters!');
+   bootstrapValidate('#startDateInput','ISO8601:Need format YYYY-MM-DD');
+   bootstrapValidate('#finishDateInput','ISO8601:Need format YYYY-MM-DD');
+
+    projectNameInput = document.getElementById('projectNameInput');
+    startDateInput = document.getElementById('startDateInput');
+    finishDateInput = document.getElementById('finishDateInput');
+
+    form = document.getElementById('projectForm');
+
+    form.addEventListener('submit', function (event) {
+        if((projectNameInput.classList.contains('is-invalid') || projectNameInput.value == "")
+            || (startDateInput.classList.contains('is-invalid') || startDateInput.value == "")
+            || (finishDateInput.classList.contains('is-invalid') || finishDateInput.value == "")){
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            document.forms['projectForm'].submit();
+        }
+    });
+
+   addClick = () => {
+   var table = document.getElementById('employeesTable');
+   var tbody = table.lastElementChild;
+   var lastElementId;
+   if(tbody.lastElementChild == null){
+        lastElementId = 0;
+   } else {
+        lastElementId = tbody.lastElementChild.getAttribute('id');
+   }
+   var newElementId = parseInt(lastElementId) + 1;
+
+   var newElementDeleteButton = getDeleteButton(newElementId);
+   var newRecord = getNewRecord(newElementId, newElementDeleteButton);
+
+   tbody.innerHTML += newRecord;
+}
+
+deleteClick = () => {
+    var target = event.target;
+    var targetButtonId;
+    if(target.tagName == 'I'){
+        targetButtonId = target.parentElement.getAttribute('id');
+    } else if(target.tagName == 'A'){
+        targetButtonId = target.getAttribute('id');
+    }
+    var targetElementId = targetButtonId.split("#")[1];
+    document.getElementById(targetElementId).remove();
+    changeTrId();
+    changeDeleteButtonId();
+    changeEmployeeList();
+}
+
+changeTrId = () => {
+    var rows = document.getElementById('employeesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].id = i;
+    }
+}
+
+changeDeleteButtonId = () => {
+    var rows = document.getElementById('employeesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0].id = `deleteEmployee#${i}`;
+    }
+}
+
+changeEmployeeList = () => {
+    var rows = document.getElementById('employeesTable').rows;
+    for(i = 1; i < rows.length; i++){
+        rows[i].getElementsByTagName('td')[0].getElementsByTagName('input')[0].id = `employeeId${i-1}`;
+        rows[i].getElementsByTagName('td')[0].getElementsByTagName('input')[0].name = `employeeId[${i-1}]`;
+    }
+}
+
+getDeleteButton = (id) => {
+    return `<a id="deleteEmployee#${id}"
+   onclick="deleteClick()"
+   role="button"
+   class="btn btn-outline-danger">
+   <i class="fas fa-trash"></i>
+</a>`;
+}
+
+getNewRecord = (newRecordId, deleteButton) => {
+    return `<tr id="${newRecordId}">
+                <td scope="row">
+                    <input class="form-control col" list="employeeOptions" placeholder="Ivan Ivanov" id="employeeId${newRecordId-1}" name="employeeId[${newRecordId-1}]">
+                </td>
+                <td scope="row" class="col-1 text-end">
+                    ${deleteButton}
+                </td>
+            </tr>`;
+}
+</script>
+</html>

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,8 +52,8 @@ class ProjectServiceImplTest {
         Project newProject = new Project(
                 null,
                 "abc",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 null);
         Optional<Project> project = projectService.create(newProject);
         assertTrue(project.isPresent());
@@ -65,8 +65,8 @@ class ProjectServiceImplTest {
         Project newProject = new Project(
                 null,
                 "abc",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 List.of(9999, 999));
         assertThrows(IllegalArgumentException.class, () -> projectService.create(newProject));
     }
@@ -76,8 +76,8 @@ class ProjectServiceImplTest {
         Project newProject = new Project(
                 1,
                 "abc",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 null);
         Optional<Project> project = projectService.update(newProject);
         assertTrue(project.isPresent());
@@ -89,8 +89,8 @@ class ProjectServiceImplTest {
         Project newProject = new Project(
                 9999,
                 "abc",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 null);
         assertThrows(IllegalArgumentException.class, () -> projectService.update(newProject));
     }
@@ -100,8 +100,8 @@ class ProjectServiceImplTest {
         Project newProject = new Project(
                 1,
                 "abc",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalDate.now(),
+                LocalDate.now(),
                 List.of(9999, 999));
         assertThrows(IllegalArgumentException.class, () -> projectService.update(newProject));
     }

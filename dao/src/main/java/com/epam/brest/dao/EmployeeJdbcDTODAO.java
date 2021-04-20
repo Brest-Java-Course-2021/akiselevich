@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
@@ -45,6 +46,7 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
                     String middleName = resultSet.getString("middleName");
                     String email = resultSet.getString("email");
                     Integer roleId = resultSet.getInt("roleId");
+                    roleId = roleId == 0 ? null : roleId;
                     String roleName = resultSet.getString("roleName");
 
                     data.putIfAbsent(
@@ -66,7 +68,12 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
                     data.get(employeeId).setEmail(email);
                     data.get(employeeId).getRoles().add(new Role(roleId,roleName));
                 }
-                return  List.copyOf(data.values());
+                return  List.copyOf(data.values()).stream().peek(employeeDTO ->
+                        employeeDTO.setRoles(
+                            employeeDTO.getRoles().get(0).getRoleId() == null
+                                    ? null
+                                    : employeeDTO.getRoles()))
+                        .collect(Collectors.toList());
             }
         };
     }

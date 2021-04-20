@@ -1,7 +1,7 @@
 package com.epam.brest.dao;
 
-import com.epam.brest.test_db.SpringJdbcConfig;
 import com.epam.brest.model.dto.ProjectDTO;
+import com.epam.brest.test_db.SpringJdbcConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
@@ -27,7 +27,7 @@ class ProjectJdbcDTODAOTest {
 
     @Test
     public void findAllProjectTest(){
-        List<ProjectDTO> projects = projectDAO.findAllProjectWithEmployeeCount();
+        List<ProjectDTO> projects = projectDAO.findAllProjectWithEmployeeCount(null);
         assertNotNull(projects);
         assertTrue(projects.size() > 0);
     }

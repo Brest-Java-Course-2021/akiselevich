@@ -1,6 +1,7 @@
 package com.epam.brest.dao;
 
 import com.epam.brest.ProjectDTODAO;
+import com.epam.brest.model.Filter;
 import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.model.dto.ProjectDTO;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProjectJdbcDTODAO  implements ProjectDTODAO {
@@ -39,19 +42,21 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
         this.setExtractor = new ResultSetExtractor<List<ProjectDTO>>() {
             @Override
             public List<ProjectDTO> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-                Map<Integer, ProjectDTO> data = new LinkedHashMap<>();
+                Map<Integer, ProjectDTO> data = new LinkedHashMap<Integer, ProjectDTO>();
                 Map<Integer, EmployeeDTO> employees = new LinkedHashMap<>();
                 while (resultSet.next()){
                     Integer projectId = resultSet.getInt("projectId");
                     String projectName = resultSet.getString("projectName");
-                    LocalDateTime startDate = resultSet.getObject("startDate", LocalDateTime.class);
-                    LocalDateTime finishDate = resultSet.getObject("finishDate", LocalDateTime.class);
+                    LocalDate startDate = resultSet.getObject("startDate", LocalDate.class);
+                    LocalDate finishDate = resultSet.getObject("finishDate", LocalDate.class);
                     Integer employeeId = resultSet.getInt("employeeId");
+                    employeeId = employeeId == 0 ? null : employeeId;
                     String firstName = resultSet.getString("firstName");
                     String lastName = resultSet.getString("lastName");
                     String middleName = resultSet.getString("middleName");
                     String email = resultSet.getString("email");
                     Integer roleId = resultSet.getInt("roleId");
+                    roleId = roleId == 0 ? null : roleId;
                     String roleName = resultSet.getString("roleName");
                     Integer numberOfEmployee = resultSet.getInt("numberOfEmployee");
 
@@ -94,15 +99,37 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
                     employees.get(employeeId).setEmail(email);
                     employees.get(employeeId).getRoles().add(new Role(roleId,roleName));
                 }
-                return  List.copyOf(data.values());
+                return  List.copyOf(data.values())
+                        .stream()
+                        .peek(projectDTO ->
+                                projectDTO.setEmployees(
+                                        projectDTO.getEmployees().get(0).getEmployeeId() == null
+                                                ? null
+                                                : projectDTO.getEmployees()
+                                                    .stream()
+                                                    .peek(employeeDTO ->
+                                                        employeeDTO.setRoles(
+                                                                employeeDTO.getRoles().get(0).getRoleId() == null
+                                                                        ? null
+                                                                        : employeeDTO.getRoles()))
+                                                    .collect(Collectors.toList())))
+                        .collect(Collectors.toList());
             }
         };
     }
 
     @Override
-    public List<ProjectDTO> findAllProjectWithEmployeeCount() {
+    public List<ProjectDTO> findAllProjectWithEmployeeCount(Filter filter) {
         LOGGER.debug("DAO method called to find all ProjectDTO");
-        return jdbcTemplate.query(selectSql, setExtractor);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
+                Map.of("startDate", filter == null || filter.getStartDate() == null
+                                ? "0000-01-01"
+                                : filter.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        "finishDate", filter == null || filter.getFinishDate() == null
+                                ? "9999-12-31"
+                                : filter.getFinishDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+        );
+        return jdbcTemplate.query(selectSql,sqlParameterSource, setExtractor);
     }
 
     @Override

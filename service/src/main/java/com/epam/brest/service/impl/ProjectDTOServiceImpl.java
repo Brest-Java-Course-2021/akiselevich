@@ -1,6 +1,7 @@
 package com.epam.brest.service.impl;
 
 import com.epam.brest.ProjectDTODAO;
+import com.epam.brest.model.Filter;
 import com.epam.brest.model.dto.ProjectDTO;
 import com.epam.brest.service.ProjectDTOService;
 import org.apache.commons.logging.Log;
@@ -24,9 +25,9 @@ public class ProjectDTOServiceImpl implements ProjectDTOService {
     }
 
     @Override
-    public List<ProjectDTO> findAll() {
+    public List<ProjectDTO> findAll(Filter filter) {
         LOGGER.debug("Service method called to find all Project with employee count");
-        return projectDTODAO.findAllProjectWithEmployeeCount();
+        return projectDTODAO.findAllProjectWithEmployeeCount(filter);
     }
 
     @Override
