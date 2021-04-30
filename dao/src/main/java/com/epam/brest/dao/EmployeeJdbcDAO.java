@@ -2,8 +2,8 @@ package com.epam.brest.dao;
 
 import com.epam.brest.EmployeeDAO;
 import com.epam.brest.model.Employee;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +24,7 @@ import java.util.*;
 @Repository
 public class EmployeeJdbcDAO implements EmployeeDAO {
 
-    private static final Log LOGGER = LogFactory.getLog(EmployeeJdbcDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeJdbcDAO.class);
 
     @Value("${employee.select}")
     private String selectSql;
@@ -99,7 +99,7 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
 
     @Override
     public Optional<Employee> findById(Integer employeeId) {
-        LOGGER.debug("DAO method called to find Employee with Id: " + employeeId);
+        LOGGER.debug("DAO method called to find Employee with Id: {}", employeeId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("employeeId", employeeId);
         List<Employee> projects = jdbcTemplate.query(findByIdSql, sqlParameterSource, setExtractor);
         return projects.isEmpty() ? Optional.empty() : Optional.of(projects.get(0));
@@ -107,7 +107,7 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
 
     @Override
     public Optional<Employee> create(Employee employee) {
-        LOGGER.debug("DAO method called to create Employee: " + employee.toString());
+        LOGGER.debug("DAO method called to create Employee: {}", employee);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
                 Map.of("firstName", employee.getFirstName(),
@@ -142,8 +142,7 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
 
     @Override
     public Optional<Employee> update(Employee employee) {
-        LOGGER.debug("DAO method called to update Employee with Id: " + employee.getEmployeeId() +
-                ", new Project:" + employee.toString());
+        LOGGER.debug("DAO method called to update Employee with Id: {}, new Project: {}", employee.getEmployeeId(), employee);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
                 Map.of("firstName", employee.getFirstName(),
@@ -187,7 +186,7 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
 
     @Override
     public void delete(Integer employeeId) {
-        LOGGER.debug("DAO method called to delete Employee with Id: " + employeeId);
+        LOGGER.debug("DAO method called to delete Employee with Id: {}", employeeId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("employeeId", employeeId);
         List<Employee> employees = jdbcTemplate.query(findByIdSql, sqlParameterSource, setExtractor);
@@ -200,4 +199,5 @@ public class EmployeeJdbcDAO implements EmployeeDAO {
         jdbcTemplate.update(deleteERSql,sqlParameterSource);
         jdbcTemplate.update(deleteSql, sqlParameterSource);
     }
+
 }

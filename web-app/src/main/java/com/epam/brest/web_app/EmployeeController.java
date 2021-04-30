@@ -6,8 +6,8 @@ import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.service.EmployeeDTOService;
 import com.epam.brest.service.EmployeeService;
 import com.epam.brest.service.RoleService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Controller
 public class EmployeeController {
 
-    private static final Log LOGGER = LogFactory.getLog(EmployeeController.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeController.class);
 
     private final EmployeeDTOService employeeDTOService;
 
@@ -43,7 +43,7 @@ public class EmployeeController {
 
     @GetMapping(value = "/employee/{id}")
     public final String gotoEditEmployeePage(@PathVariable Integer id, Model model) {
-        LOGGER.debug("Controller method called to view EditPage Employee with Id: " + id);
+        LOGGER.debug("Controller method called to view EditPage Employee with Id: {}", id);
         Optional<EmployeeDTO> optionalEmployee = employeeDTOService.findById(id);
         if (optionalEmployee.isPresent()) {
             model.addAttribute("isNew", false);
@@ -80,21 +80,21 @@ public class EmployeeController {
 
     @PostMapping(value = "/employee")
     public String addEmployee(Employee employee, Model model) {
-        LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+        LOGGER.debug("Controller method called to add new Employee: {}", employee);
         employeeService.create(employee);
         return "redirect:/employees";
     }
 
     @PostMapping(value = "/employee/{id}")
     public String updateEmployee(Employee employee, Model model) {
-        LOGGER.debug("Controller method called to add new Employee: " + employee.toString());
+        LOGGER.debug("Controller method called to add new Employee: {}", employee);
         employeeService.update(employee);
         return "redirect:/employees";
     }
 
     @GetMapping(value = "/employee/{id}/delete")
     public final String deleteEmployeeById(@PathVariable Integer id, Model model) {
-        LOGGER.debug("Controller method called to delete Employee: " + id);
+        LOGGER.debug("Controller method called to delete Employee: {}", id);
         employeeService.delete(id);
         return "redirect:/employees";
     }

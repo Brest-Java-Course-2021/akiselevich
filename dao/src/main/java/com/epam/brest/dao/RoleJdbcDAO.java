@@ -2,8 +2,8 @@ package com.epam.brest.dao;
 
 import com.epam.brest.RoleDAO;
 import com.epam.brest.model.Role;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,12 +16,15 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class RoleJdbcDAO implements RoleDAO {
 
-    private static final Log LOGGER = LogFactory.getLog(RoleJdbcDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(RoleJdbcDAO.class);
 
     @Value("${role.select}")
     private String selectSql;
@@ -66,7 +69,7 @@ public class RoleJdbcDAO implements RoleDAO {
 
     @Override
     public Optional<Role> findById(Integer roleId) {
-        LOGGER.debug("DAO method called to find Role with Id: " + roleId);
+        LOGGER.debug("DAO method called to find Role with Id: {}", roleId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("roleId", roleId);
         List<Role> roles = jdbcTemplate.query(findByIdSql, sqlParameterSource, rowMapper);
         return roles.isEmpty() ? Optional.empty() : Optional.of(roles.get(0));
@@ -74,7 +77,7 @@ public class RoleJdbcDAO implements RoleDAO {
 
     @Override
     public Optional<Role> create(Role role) {
-        LOGGER.debug("DAO method called to create Role: " + role.toString());
+        LOGGER.debug("DAO method called to create Role: {}", role);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("roleName", role.getRoleName());
@@ -88,8 +91,7 @@ public class RoleJdbcDAO implements RoleDAO {
 
     @Override
     public Optional<Role> update(Role role) {
-        LOGGER.debug("DAO method called to update Role with Id: " + role.getRoleId() +
-                ", new Role:" + role.toString());
+        LOGGER.debug("DAO method called to update Role with Id: {}, new Role: {}", role.getRoleId(), role);
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
@@ -109,7 +111,7 @@ public class RoleJdbcDAO implements RoleDAO {
 
     @Override
     public void delete(Integer roleId) {
-        LOGGER.debug("DAO method called to delete Role with Id: " + roleId);
+        LOGGER.debug("DAO method called to delete Role with Id: {}", roleId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("roleId", roleId);
         List<Role> roles = jdbcTemplate.query(findByIdSql, sqlParameterSource, rowMapper);
@@ -120,6 +122,6 @@ public class RoleJdbcDAO implements RoleDAO {
 
         jdbcTemplate.update(deleteERSql,sqlParameterSource);
         jdbcTemplate.update(deleteSql, sqlParameterSource);
-
     }
+
 }

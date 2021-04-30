@@ -3,8 +3,8 @@ package com.epam.brest.service.impl;
 import com.epam.brest.EmployeeDTODAO;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.service.EmployeeDTOService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Transactional
 public class EmployeeDTOServiceImpl implements EmployeeDTOService {
 
-    private static final Log LOGGER = LogFactory.getLog(EmployeeDTOServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeDTOServiceImpl.class);
 
     private final EmployeeDTODAO employeeDTODAO;
 
@@ -31,7 +31,7 @@ public class EmployeeDTOServiceImpl implements EmployeeDTOService {
 
     @Override
     public Optional<EmployeeDTO> findById(Integer employeeId) {
-        LOGGER.debug("Service method called to find EmployeeDTO by Id: " + employeeId);
+        LOGGER.debug("Service method called to find EmployeeDTO by Id: {}", employeeId);
         return employeeDTODAO.findEmployeeById(employeeId);
     }
 

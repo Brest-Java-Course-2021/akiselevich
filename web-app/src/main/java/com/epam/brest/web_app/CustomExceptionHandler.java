@@ -1,7 +1,7 @@
 package com.epam.brest.web_app;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Log LOGGER = LogFactory.getLog(CustomExceptionHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(CustomExceptionHandler.class);
 
     @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
     protected String handleConflict(MethodArgumentTypeMismatchException ex, Model model) {

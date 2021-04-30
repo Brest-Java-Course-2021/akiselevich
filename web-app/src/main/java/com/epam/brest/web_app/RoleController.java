@@ -2,8 +2,8 @@ package com.epam.brest.web_app;
 
 import com.epam.brest.model.Role;
 import com.epam.brest.service.RoleService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Controller
 public class RoleController {
 
-    private static final Log LOGGER = LogFactory.getLog(RoleController.class);
+    private static final Logger LOGGER = LogManager.getLogger(RoleController.class);
 
     private final RoleService roleService;
 
@@ -32,7 +32,7 @@ public class RoleController {
 
     @GetMapping(value = "/role/{id}")
     public final String gotoEditRolePage(@PathVariable Integer id, Model model) {
-        LOGGER.debug("Controller method called to view EditPage Role with Id: " + id);
+        LOGGER.debug("Controller method called to view EditPage Role with Id: {}", id);
         Optional<Role> optionalRole = roleService.findById(id);
         if (optionalRole.isPresent()) {
             model.addAttribute("isNew", false);
@@ -56,21 +56,21 @@ public class RoleController {
 
     @PostMapping(value = "/role")
     public String addRole(Role role) {
-        LOGGER.debug("Controller method called to add new Role: " + role.toString());
+        LOGGER.debug("Controller method called to add new Role: {}", role);
         roleService.create(role);
         return "redirect:/roles";
     }
 
     @PostMapping(value = "/role/{id}")
     public String updateRole(Role role) {
-        LOGGER.debug("Controller method called to update Role: " + role.toString());
+        LOGGER.debug("Controller method called to update Role: {}", role);
         roleService.update(role);
         return "redirect:/roles";
     }
 
     @GetMapping(value = "/role/{id}/delete")
     public final String deleteRoleById(@PathVariable Integer id, Model model) {
-        LOGGER.debug("Controller method called to delete Role: " + id);
+        LOGGER.debug("Controller method called to delete Role: {}", id);
         roleService.delete(id);
         return "redirect:/roles";
     }

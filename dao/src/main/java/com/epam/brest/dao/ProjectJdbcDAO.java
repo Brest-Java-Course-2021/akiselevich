@@ -2,8 +2,8 @@ package com.epam.brest.dao;
 
 import com.epam.brest.ProjectDAO;
 import com.epam.brest.model.Project;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +24,7 @@ import java.util.*;
 @Repository
 public class ProjectJdbcDAO implements ProjectDAO {
 
-    private static final Log LOGGER = LogFactory.getLog(ProjectJdbcDAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProjectJdbcDAO.class);
 
     @Value("${project.select}")
     private String selectSql;
@@ -92,15 +92,17 @@ public class ProjectJdbcDAO implements ProjectDAO {
 
     @Override
     public Optional<Project> findById(Integer projectId) {
-        LOGGER.debug("DAO method called to find Project with Id: " + projectId);
+        LOGGER.debug("DAO method called to find Project with Id: {}", projectId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("projectId", projectId);
         List<Project> projects = jdbcTemplate.query(findByIdSql, sqlParameterSource, setExtractor);
-        return projects.isEmpty() ? Optional.empty() : Optional.of(projects.get(0));
+        return projects.isEmpty()
+                ? Optional.empty()
+                : Optional.of(projects.get(0));
     }
 
     @Override
     public Optional<Project> create(Project project) {
-        LOGGER.debug("DAO method called to create Project: " + project.toString());
+        LOGGER.debug("DAO method called to create Project: {}", project);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
                 Map.of("projectName", project.getProjectName(),
@@ -132,8 +134,7 @@ public class ProjectJdbcDAO implements ProjectDAO {
 
     @Override
     public Optional<Project> update(Project project) {
-        LOGGER.debug("DAO method called to update Project with Id: " + project.getProjectId() +
-                ", new Project:" + project.toString());
+        LOGGER.debug("DAO method called to update Project with Id: {}, new Project: {}", project.getProjectId(), project);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(
                 Map.of("projectName", project.getProjectName(),
@@ -175,7 +176,7 @@ public class ProjectJdbcDAO implements ProjectDAO {
 
     @Override
     public void delete(Integer projectId) {
-        LOGGER.debug("DAO method called to delete Project with Id: " + projectId);
+        LOGGER.debug("DAO method called to delete Project with Id: {}", projectId);
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("projectId", projectId);
         List<Project> projects = jdbcTemplate.query(findByIdSql, sqlParameterSource, setExtractor);
@@ -186,6 +187,6 @@ public class ProjectJdbcDAO implements ProjectDAO {
 
         jdbcTemplate.update(deletePESql,sqlParameterSource);
         jdbcTemplate.update(deleteSql, sqlParameterSource);
-
     }
+
 }
