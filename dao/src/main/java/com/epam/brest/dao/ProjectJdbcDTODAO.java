@@ -5,8 +5,8 @@ import com.epam.brest.model.Filter;
 import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
 import com.epam.brest.model.dto.ProjectDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Repository
 public class ProjectJdbcDTODAO  implements ProjectDTODAO {
 
-    private static final Log LOGGER = LogFactory.getLog(ProjectJdbcDTODAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProjectJdbcDTODAO.class);
 
     @Value("${projectDto.findAllWithCountOfEmployees}")
     private String selectSql;
@@ -97,7 +97,7 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
                     employees.get(employeeId).setLastName(lastName);
                     employees.get(employeeId).setMiddleName(middleName);
                     employees.get(employeeId).setEmail(email);
-                    employees.get(employeeId).getRoles().add(new Role(roleId,roleName));
+                    employees.get(employeeId).getRoles().add(new Role(roleId, roleName));
                 }
                 return  List.copyOf(data.values())
                         .stream()
@@ -129,7 +129,7 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
                                 ? "9999-12-31"
                                 : filter.getFinishDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         );
-        return jdbcTemplate.query(selectSql,sqlParameterSource, setExtractor);
+        return jdbcTemplate.query(selectSql, sqlParameterSource, setExtractor);
     }
 
     @Override
@@ -137,6 +137,9 @@ public class ProjectJdbcDTODAO  implements ProjectDTODAO {
         LOGGER.debug("DAO method called to find ProjectDTO by Id");
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("projectId", projectId);
         List<ProjectDTO> projectDTOList = jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor);
-        return projectDTOList.isEmpty() ? Optional.empty() : Optional.of(projectDTOList.get(0));
+        return projectDTOList.isEmpty()
+                ? Optional.empty()
+                : Optional.of(projectDTOList.get(0));
     }
+
 }

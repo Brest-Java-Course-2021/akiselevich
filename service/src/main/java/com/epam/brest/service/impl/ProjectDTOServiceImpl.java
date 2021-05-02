@@ -4,8 +4,8 @@ import com.epam.brest.ProjectDTODAO;
 import com.epam.brest.model.Filter;
 import com.epam.brest.model.dto.ProjectDTO;
 import com.epam.brest.service.ProjectDTOService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 @Transactional
 public class ProjectDTOServiceImpl implements ProjectDTOService {
 
-    private static final Log LOGGER = LogFactory.getLog(ProjectDTOServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProjectDTOServiceImpl.class);
 
     private final ProjectDTODAO projectDTODAO;
 
@@ -32,7 +32,7 @@ public class ProjectDTOServiceImpl implements ProjectDTOService {
 
     @Override
     public Optional<ProjectDTO> findById(Integer projectId) {
-        LOGGER.debug("Service method called to find Project with employee count by Id: " + projectId);
+        LOGGER.debug("Service method called to find Project with employee count by Id: {}", projectId);
         return projectDTODAO.findProjectWithEmployeeById(projectId);
     }
 

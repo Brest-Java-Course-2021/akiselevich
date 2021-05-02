@@ -3,8 +3,8 @@ package com.epam.brest.dao;
 import com.epam.brest.EmployeeDTODAO;
 import com.epam.brest.model.Role;
 import com.epam.brest.model.dto.EmployeeDTO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Repository
 public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
 
-    private static final Log LOGGER = LogFactory.getLog(EmployeeJdbcDTODAO.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeJdbcDTODAO.class);
 
     @Value("${employeeDto.findAllEmployees}")
     private String selectSql;
@@ -86,9 +86,11 @@ public class EmployeeJdbcDTODAO implements EmployeeDTODAO {
 
     @Override
     public Optional<EmployeeDTO> findEmployeeById(Integer employeeId) {
-        LOGGER.debug("DAO method called to find EmployeeDTO by Id: " + employeeId);
+        LOGGER.debug("DAO method called to find EmployeeDTO by Id: {}", employeeId);
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("employeeId", employeeId);
         List<EmployeeDTO> employees = jdbcTemplate.query(selectByIdSql, sqlParameterSource, setExtractor);
-        return employees.isEmpty() ? Optional.empty() : Optional.of(employees.get(0));
+        return employees.isEmpty()
+                ? Optional.empty()
+                : Optional.of(employees.get(0));
     }
 }
