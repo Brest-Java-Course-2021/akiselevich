@@ -30,7 +30,7 @@ public class RoleController {
     }
 
     @GetMapping(value = "/roles/{id}")
-    public ResponseEntity<Role> findById(@PathVariable Integer id) {
+    public ResponseEntity<Role> findRoleById(@PathVariable Integer id) {
         LOGGER.debug("Controller method called to view Role by Id: {}", id);
         Optional<Role> optional = roleService.findById(id);
         return optional.isPresent()

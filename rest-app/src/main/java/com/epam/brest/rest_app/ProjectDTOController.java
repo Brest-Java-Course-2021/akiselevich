@@ -27,7 +27,7 @@ public class ProjectDTOController {
     }
 
     @GetMapping(value = "/project-dtos")
-    public Collection<ProjectDTO> projects(@RequestParam(value = "startDate", required = false)
+    public Collection<ProjectDTO> projectDtos(@RequestParam(value = "startDate", required = false)
                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                            @RequestParam(value = "finishDate", required = false)
                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finishDate) {
@@ -36,7 +36,7 @@ public class ProjectDTOController {
     }
 
     @GetMapping(value = "/project-dtos/{id}")
-    public ResponseEntity<ProjectDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<ProjectDTO> findProjectDtoById(@PathVariable Integer id) {
         LOGGER.debug("Controller method called to view Project by Id: {}", id);
         Optional<ProjectDTO> optional = projectDTOService.findById(id);
         return optional.isPresent()

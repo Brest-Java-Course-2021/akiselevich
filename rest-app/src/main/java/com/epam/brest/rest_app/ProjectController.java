@@ -30,7 +30,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/projects/{id}")
-    public ResponseEntity<Project> findById(@PathVariable Integer id) {
+    public ResponseEntity<Project> findProjectById(@PathVariable Integer id) {
         LOGGER.debug("Controller method called to view Project by Id: {}", id);
         Optional<Project> optional = projectService.findById(id);
         return optional.isPresent()

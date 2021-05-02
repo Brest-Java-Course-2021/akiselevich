@@ -27,13 +27,13 @@ public class EmployeeDTOController {
     }
 
     @GetMapping(value = "/employee-dtos")
-    public Collection<EmployeeDTO> employees() {
+    public Collection<EmployeeDTO> employeeDtos() {
         LOGGER.debug("Controller method called to view all Employees");
         return employeeDTOService.findAll();
     }
 
     @GetMapping(value = "/employee-dtos/{id}")
-    public ResponseEntity<EmployeeDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<EmployeeDTO> findEmployeeDtoById(@PathVariable Integer id) {
         LOGGER.debug("Controller method called to view Employee by Id: {}", id);
         Optional<EmployeeDTO> optional = employeeDTOService.findById(id);
         return optional.isPresent()

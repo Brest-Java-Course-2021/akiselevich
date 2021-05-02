@@ -30,7 +30,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/employees/{id}")
-    public ResponseEntity<Employee> findById(@PathVariable Integer id) {
+    public ResponseEntity<Employee> findEmployeeById(@PathVariable Integer id) {
         LOGGER.debug("Controller method called to view Employee by Id: {}", id);
         Optional<Employee> optional = employeeService.findById(id);
         return optional.isPresent()
