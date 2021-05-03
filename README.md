@@ -1,6 +1,6 @@
 # Project Employee
 
-This is sample Project and Human resource management web application.
+This is simple Project and Human resource management web application.
 
 ## Documentation
 
@@ -21,6 +21,12 @@ mvn clean install
 
 ```
 java -jar ./web-app/target/web-app-1.0-SNAPSHOT.jar
+```
+
+## To view web-application go to following URL:
+
+```
+http://localhost:8080/
 ```
 
 ## Run rest-application:

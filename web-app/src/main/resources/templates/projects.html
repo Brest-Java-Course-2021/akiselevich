@@ -105,8 +105,8 @@
             <tbody>
                 <tr th:each="project : ${projects}" th:id="${project.projectId}">
                     <td scope="row" th:text="${project.projectName}" >Price Calculator</td>
-                    <td scope="row" th:text="${#temporals.format(project.startDate, 'yyyy-MM-dd')}" >01.02.2020</td>
-                    <td scope="row" th:text="${#temporals.format(project.finishDate,'yyyy-MM-dd')}" >07.02.2021</td>
+                    <td scope="row" th:text="${project.startDate}" >01.02.2020</td>
+                    <td scope="row" th:text="${project.finishDate}" >07.02.2021</td>
                     <td scope="row">
                         <table class="table table-light">
                             <thead>
