@@ -1,20 +1,15 @@
 package com.epam.brest.service.rest;
 
 import com.epam.brest.model.Filter;
-import com.epam.brest.model.Project;
 import com.epam.brest.model.dto.ProjectDTO;
 import com.epam.brest.service.ProjectDTOService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
